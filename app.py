@@ -42,10 +42,21 @@ def generer_corpus(projet,menu_value,df,l_variables,l_variables_all):
     st.write(str(len(df))+" lignes retenues pour le corpus")
     st.write(corpus[:10])
     print(">> Fin des traitements")
-    with open(os.path.join(path,"corpus.txt"), "w") as f:
+    # with open(os.path.join(path,"corpus.txt"), "w") as f:
+    #     f.write('\n'.join(corpus))
+    #     st.download_button('Download corpus', f)
+
+    with open("corpus.txt", "w") as f:
         f.write('\n'.join(corpus))
-        st.download_button('Download corpus', f)
+        btn = st.download_button('Download corpus', f, file_name="corpus.txt",mime="application/octet-stream")
     
+#     with open("ths.pdf", "rb") as file:
+#     btn=st.download_button(
+#     label="Generate Trivia Host Sheet",
+#     data=file,
+#     file_name="TriviaHostSheet.pdf",
+#     mime="application/octet-stream"
+# )
     
 
 def main():
