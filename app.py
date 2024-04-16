@@ -46,9 +46,13 @@ def generer_corpus(projet,menu_value,df,l_variables,l_variables_all):
     #     f.write('\n'.join(corpus))
     #     st.download_button('Download corpus', f)
 
-    with open("corpus.txt", "w") as f:
-        f.write('\n'.join(corpus))
-        btn = st.download_button('Download corpus', f, file_name="corpus.txt",mime="application/octet-stream")
+    corpus_file = '\n'.join(corpus)
+    st.download_button(
+        label="Download data as CSV",
+        data=corpus_file,
+        file_name='corpus.csv',
+        mime='text/csv',
+    )
     
 #     with open("ths.pdf", "rb") as file:
 #     btn=st.download_button(
