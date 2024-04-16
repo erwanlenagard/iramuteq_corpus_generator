@@ -82,9 +82,9 @@ def create_corpus(df, message, l_variables, path):
         corpus_lines.extend([' '.join(first_line), row[message]])
 
     with open(os.path.join(path,"corpus.txt"), "w") as f:
+        f.write('\n'.join(corpus_lines))
         st.download_button('Download corpus', f)
-        # f.write('\n'.join(corpus_lines))
-
+        
     return corpus_lines
 
 def clean_variable(var):
