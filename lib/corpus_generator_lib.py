@@ -70,14 +70,14 @@ def create_multiselect(df):
 #     new_df.to_csv(os.path.join(path,"corpus.txt"), header=None, index=None, sep=';', mode='a')
 #     return new_df
 
-def create_corpus(df, message, l_variables, path):
+def create_corpus(df, message, l_variables):
     corpus_lines = []
     for _, row in df.astype(str).iterrows():
         first_line = ["****"]
         for var in l_variables:
             var_clean = clean_variable(var)
             modalite = clean_modalite(row[var])
-            first_line.append("*{}{}".format(var_clean, modalite))
+            first_line.append("*{}_{}".format(var_clean, modalite))
         corpus_lines.extend([' '.join(first_line), row[message]])
         
     return corpus_lines
