@@ -2,30 +2,30 @@ from lib import corpus_generator_lib
 from lib.corpus_generator_lib import *
 import streamlit as st
 
-@st.cache(suppress_st_warning=True)
-def file_upload(df):
-    fichier = st.sidebar.file_uploader("Choisir un fichier",['csv','txt'])
-    if fichier is not None:
-        fichier.seek(0)
-        df = pd.read_csv(fichier, sep=';', decimal = ".", index_col=None, encoding = "utf-8")
-        st.subheader("Aperçu des données")
-        st.write(df.head())
-    return df,fichier
+# @st.cache(suppress_st_warning=True)
+# def file_upload(df):
+#     fichier = st.sidebar.file_uploader("Choisir un fichier",['csv','txt'])
+#     if fichier is not None:
+#         fichier.seek(0)
+#         df = pd.read_csv(fichier, sep=';', decimal = ".", index_col=None, encoding = "utf-8")
+#         st.subheader("Aperçu des données")
+#         st.write(df.head())
+#     return df,fichier
             
-def list_results(path):
-    st.subheader("Consulter mes fichiers de résultats")
-    l_all_files=list_files_in_dir(path, "*")
-    for file in l_all_files:
-        file=file.replace('./',os.getcwd()+"\\")
-        st.markdown("<a href=file:\\\\\\///"+file+" target=\"_blank\">"+os.path.basename(file)+"</a>", unsafe_allow_html=True)
+# def list_results(path):
+#     st.subheader("Consulter mes fichiers de résultats")
+#     l_all_files=list_files_in_dir(path, "*")
+#     for file in l_all_files:
+#         file=file.replace('./',os.getcwd()+"\\")
+#         st.markdown("<a href=file:\\\\\\///"+file+" target=\"_blank\">"+os.path.basename(file)+"</a>", unsafe_allow_html=True)
         
-def generer_corpus(projet,menu_value,df,l_variables,l_variables_all):
+def generer_corpus(menu_value,df,l_variables,l_variables_all):
     #############################
     # CREATION DES REPERTOIRES  #
     #############################
-    path="./"+projet+"/"
-    if not os.path.exists(path):
-        os.makedirs(path)
+    # path=os.path.join(".",projet)
+    # if not os.path.exists(path):
+    #     os.makedirs(path)
     with st.spinner(">> "+str(len(df))+" lignes transmises avant nettoyage"):
         print(len(df),"lignes transmises avant nettoyage")
         df=df[list(l_variables_all)]
@@ -37,14 +37,11 @@ def generer_corpus(projet,menu_value,df,l_variables,l_variables_all):
         print(len(df),"lignes retenues pour le corpus")  
     with st.spinner('2/2 - Création du corpus'):
         print(">> Création du corpus")
-        corpus=create_corpus(df, menu_value,l_variables,path)
+        corpus=create_corpus(df, menu_value,l_variables)
     st.subheader("Aperçu du corpus")
     st.write(str(len(df))+" lignes retenues pour le corpus")
     st.write(corpus[:10])
     print(">> Fin des traitements")
-    # with open(os.path.join(path,"corpus.txt"), "w") as f:
-    #     f.write('\n'.join(corpus))
-    #     st.download_button('Download corpus', f)
 
     corpus_file = '\n'.join(corpus)
     st.download_button(
@@ -54,14 +51,7 @@ def generer_corpus(projet,menu_value,df,l_variables,l_variables_all):
         mime='text/csv',
     )
     
-#     with open("ths.pdf", "rb") as file:
-#     btn=st.download_button(
-#     label="Generate Trivia Host Sheet",
-#     data=file,
-#     file_name="TriviaHostSheet.pdf",
-#     mime="application/octet-stream"
-# )
-    
+
 
 def main():
     
@@ -76,9 +66,6 @@ def main():
     st.sidebar.title('Paramètres')
     st.title('Générer un corpus Iramuteq')   
     
-    
-    projet=st.sidebar.text_input("Donner un nom de projet", value='monProjet', max_chars=None, key=None, type='default')
-
     fichier = st.sidebar.file_uploader("Choisir un fichier",['csv','txt'])
     if fichier is not None:
         # Can be used wherever a "file-like" object is accepted:
@@ -98,8 +85,7 @@ def main():
 
         l_variables_all.add(menu_value)
         if st.sidebar.button('Préparer le corpus'):
-            generer_corpus(projet,menu_value,df,l_variables,l_variables_all)
-            list_results(path=os.path.join(".", projet))
+            generer_corpus(menu_value,df,l_variables,l_variables_all)
 
         
     
