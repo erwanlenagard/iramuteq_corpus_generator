@@ -12,7 +12,6 @@ from sys import stdin               # how else should we get our input :)
 from glob import glob
 from bs4 import BeautifulSoup
 from textacy.preprocessing.replace import urls
-import streamlit as st
 
 def remove_extra_spaces(text):
     """
@@ -80,10 +79,6 @@ def create_corpus(df, message, l_variables, path):
             modalite = clean_modalite(row[var])
             first_line.append("*{}{}".format(var_clean, modalite))
         corpus_lines.extend([' '.join(first_line), row[message]])
-
-    with open(os.path.join(path,"corpus.txt"), "w") as f:
-        f.write('\n'.join(corpus_lines))
-        st.download_button('Download corpus', f)
         
     return corpus_lines
 

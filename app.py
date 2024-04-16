@@ -42,6 +42,10 @@ def generer_corpus(projet,menu_value,df,l_variables,l_variables_all):
     st.write(str(len(df))+" lignes retenues pour le corpus")
     st.write(corpus[:10])
     print(">> Fin des traitements")
+    with open(os.path.join(path,"corpus.txt"), "w") as f:
+        f.write('\n'.join(corpus))
+        st.download_button('Download corpus', f)
+    
     
 
 def main():
@@ -53,14 +57,13 @@ def main():
         initial_sidebar_state="expanded",
     )
     
-    st.set_option('deprecation.showfileUploaderEncoding', False)
+    # st.set_option('deprecation.showfileUploaderEncoding', False)
     st.sidebar.title('Paramètres')
     st.title('Générer un corpus Iramuteq')   
     
     
     projet=st.sidebar.text_input("Donner un nom de projet", value='monProjet', max_chars=None, key=None, type='default')
-#     df = pd.DataFrame()
-#     df,fichier = file_upload(df)
+
     fichier = st.sidebar.file_uploader("Choisir un fichier",['csv','txt'])
     if fichier is not None:
         # Can be used wherever a "file-like" object is accepted:
@@ -82,6 +85,7 @@ def main():
         if st.sidebar.button('Préparer le corpus'):
             generer_corpus(projet,menu_value,df,l_variables,l_variables_all)
             list_results(path=os.path.join(".", projet))
+
         
     
 if __name__ == "__main__":
